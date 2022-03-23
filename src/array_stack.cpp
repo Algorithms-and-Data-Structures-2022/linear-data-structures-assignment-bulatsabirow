@@ -11,50 +11,82 @@ namespace assignment {
     if (capacity <= 0) {
       throw std::invalid_argument("capacity is not positive");
     }
+    capacity_ = capacity;
+    data_ = new int [capacity_];
+    std::fill(data_, data_ + capacity_, 0);
+
 
     // Write your code here ...
   }
 
   ArrayStack::~ArrayStack() {
-    // Write your code here ...
+   size_ = 0;
+   capacity_ = 0;
+
+   delete data_;
+   data_ = nullptr;
   }
 
   void ArrayStack::Push(int value) {
-    // Write your code here ...
+    if (size_ == capacity_){
+      int *new_data = new int [capacity_ + kCapacityGrowthCoefficient];
+      std::fill(new_data, new_data + capacity_ + kCapacityGrowthCoefficient, 0);
+      for (int i = 0;i != size_;i++){
+        new_data[i] = data_[i];
+      }
+      data_ = new_data;
+      capacity_ += kCapacityGrowthCoefficient;
+    }
+    data_[size_] = value;
+    size_++;
   }
 
   bool ArrayStack::Pop() {
-    // Write your code here ...
-    return false;
+    if (size_ == 0) {
+      return false;
+    }
+    data_[size_ - 1] = 0;
+    size_--;
+    return true;
   }
 
   void ArrayStack::Clear() {
-    // Write your code here ...
+    size_ = 0;
   }
 
   std::optional<int> ArrayStack::Peek() const {
-    // Write your code here ...
-    return std::nullopt;
+    if (size_ == 0) {
+      return std::nullopt;
+    }
+    return data_[size_ - 1];
   }
 
   bool ArrayStack::IsEmpty() const {
-    // Write your code here ...
-    return false;
+    return size_ == 0;
   }
 
   int ArrayStack::size() const {
     // Write your code here ...
-    return 0;
+    return size_;
   }
 
   int ArrayStack::capacity() const {
     // Write your code here ...
-    return 0;
+    return capacity_;
   }
 
   bool ArrayStack::Resize(int new_capacity) {
-    // Write your code here ...
+    if (new_capacity <= capacity_){
     return false;
+    }
+    int *new_data = new int[new_capacity];
+    std::fill(new_data, new_data + new_capacity, 0);
+    for(int i = 0;i != size_;i++){
+      new_data[i] = data_[i];
+    }
+    data_ = new_data;
+    capacity_ = new_capacity;
+    return true;
   }
 
   // ДЛЯ ТЕСТИРОВАНИЯ

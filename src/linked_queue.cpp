@@ -9,34 +9,60 @@ namespace assignment {
   }
 
   void LinkedQueue::Enqueue(int value) {
-    // Write your code here ...
+   Node *added_node = new Node(value);
+   if (front_ == nullptr){
+    front_ = added_node;
+    back_ = added_node;
+   }
+   else{
+     back_->next = added_node;
+     back_ = added_node;
+   }
+   size_++;
   }
 
   bool LinkedQueue::Dequeue() {
-    // Write your code here ...
-    return false;
+    if(front_ == nullptr) {
+      return false;
+    }
+    Node *tmp = front_;
+    front_ = front_->next;
+    delete tmp;
+    size_--;
+    return true;
   }
 
   void LinkedQueue::Clear() {
-    // Write your code here ...
+    for(Node *curr = front_;curr!=nullptr;){
+      Node *node_to_remove = curr;
+      curr = curr->next;
+      delete node_to_remove;
+    }
+    front_= nullptr;
+    back_ = nullptr;
+    size_ = 0;
   }
 
   std::optional<int> LinkedQueue::front() const {
-    // Write your code here ...
-    return std::nullopt;
+    if(size_ == 0) {
+      return std::nullopt;
+    }
+    return front_->value;
   }
 
   std::optional<int> LinkedQueue::back() const {
-    // Write your code here ...
-    return std::nullopt;
+   if (size_ == 0) {
+     return std::nullopt;
+   }
+   return back_->value;
   }
 
   bool LinkedQueue::IsEmpty() const {
-    return false;
+    return size_ == 0;
   }
 
   int LinkedQueue::size() const {
-    return 0;
+    return size_;
   }
 
   // ДЛЯ ТЕСТИРОВАНИЯ
